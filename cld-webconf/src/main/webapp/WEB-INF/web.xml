@@ -31,7 +31,7 @@
 	
     <servlet>
         <servlet-name>ConfServlet</servlet-name>
-        <servlet-class>org.cld.webconf.ConfServlet</servlet-class>
+        <servlet-class>org.cldutil.webconf.ConfServlet</servlet-class>
         <init-param>
 	        <param-name>APP_ROOT</param-name>
 	        <param-value>http://localhost:8080/cldwebconf</param-value>
@@ -39,7 +39,7 @@
     </servlet>
     <servlet>
         <servlet-name>UploadServlet</servlet-name>
-        <servlet-class>org.cld.webconf.UploadServlet</servlet-class>
+        <servlet-class>org.cldutil.webconf.UploadServlet</servlet-class>
     </servlet>
    
     <servlet-mapping>
@@ -59,6 +59,6 @@
     </welcome-file-list>
     
     <listener>
-    	<listener-class>org.cld.webconf.InitListener</listener-class>
+    	<listener-class>org.cldutil.webconf.InitListener</listener-class>
     </listener>
 </web-app>

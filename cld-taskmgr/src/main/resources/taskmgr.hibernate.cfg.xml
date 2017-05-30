@@ -55,8 +55,8 @@
         
 		<mapping resource="Task.hbm.xml"/>
 		<mapping resource="TaskStat.hbm.xml"/>
-		<mapping class="org.cld.taskmgr.entity.Task"/>
-		<mapping class="org.cld.taskmgr.entity.TaskStat"/>
+		<mapping class="org.cldutil.taskmgr.entity.Task"/>
+		<mapping class="org.cldutil.taskmgr.entity.TaskStat"/>
     </session-factory>
 
 </hibernate-configuration>

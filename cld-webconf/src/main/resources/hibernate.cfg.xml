@@ -28,9 +28,9 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="org.cld.util.entity.SiteConf"/>
-        <mapping class="org.cld.util.entity.Logs"/>
-        <mapping class="org.cld.util.entity.LogPattern"/>
+        <mapping class="org.cldutil.util.entity.SiteConf"/>
+        <mapping class="org.cldutil.util.entity.Logs"/>
+        <mapping class="org.cldutil.util.entity.LogPattern"/>
     </session-factory>
 
 </hibernate-configuration>

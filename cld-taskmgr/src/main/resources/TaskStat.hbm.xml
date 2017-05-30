@@ -4,7 +4,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.cld.taskmgr.entity">
+<hibernate-mapping package="org.cldutil.taskmgr.entity">
     
      <class name="BrokenPage" table="BROKENPAGE">
         <id name="url" type="string" column="URL" length="350"></id>

@@ -1,5 +1,5 @@
-<%@ page import="org.cld.util.entity.Product" %>
-<%@ page import="org.cld.webconf.ConfServlet" %>
+<%@ page import="org.cldutil.util.entity.Product" %>
+<%@ page import="org.cldutil.webconf.ConfServlet" %>
 <%@ page import="java.net.URLEncoder" %>
 	
 	<!-- prdlist -->

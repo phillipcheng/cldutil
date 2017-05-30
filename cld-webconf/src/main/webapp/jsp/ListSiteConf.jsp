@@ -17,12 +17,12 @@ function submitNew(){
 <title>SiteConf List</title>
 </head>
 <body>
-<%@ page import="org.cld.webconf.InitListener" %>
-<%@ page import="org.cld.webconf.ConfServlet" %>
-<%@ page import="org.cld.webconf.ServletUtil" %>
-<%@ page import="org.cld.webconf.WebConfPersistMgr" %>
-<%@ page import="org.cld.util.HtmlUtil" %>
-<%@ page import="org.cld.util.entity.SiteConf" %>
+<%@ page import="org.cldutil.webconf.InitListener" %>
+<%@ page import="org.cldutil.webconf.ConfServlet" %>
+<%@ page import="org.cldutil.webconf.ServletUtil" %>
+<%@ page import="org.cldutil.webconf.WebConfPersistMgr" %>
+<%@ page import="org.cldutil.util.HtmlUtil" %>
+<%@ page import="org.cldutil.util.entity.SiteConf" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Set" %>
@@ -32,7 +32,7 @@ function submitNew(){
 <%@ page import="org.apache.logging.log4j.core.config.LoggerConfig"%>
 <%@ page import="org.apache.logging.log4j.Level"%>
 <%@ page import="org.hibernate.cfg.Configuration"%>
-<%@ page import="org.cld.taskmgr.entity.RunType"%>
+<%@ page import="org.cldutil.taskmgr.entity.RunType"%>
 
 
 <% Logger logger = LogManager.getLogger("cld.jsp");%>

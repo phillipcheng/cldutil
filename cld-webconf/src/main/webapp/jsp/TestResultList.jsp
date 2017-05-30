@@ -21,7 +21,7 @@ function cancelTask(taskid){
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="org.cld.webconf.ConfServlet" %>
+<%@ page import="org.cldutil.webconf.ConfServlet" %>
 <%@ page import="org.apache.logging.log4j.LogManager"%>
 <%@ page import="org.apache.logging.log4j.Logger"%>
 

@@ -1,3 +1,3 @@
-set project_root=C:/mydoc/myprojects/ereminder/Reminder/modules
+set project_root=../
 
-xjc -d %project_root%/cld-util/src/main/java -p org.xml.taskdef -b %project_root%/shopping/src/main/resources/taskbinding_2_0.xml %project_root%/shopping/src/main/resources/Task_2_0.xsd
+xjc -d %project_root%/src/main/java -p org.cldutil.xml.taskdef -b %project_root%/src/main/resources/taskbinding_2_0.xml %project_root%/src/main/resources/Task_2_0.xsd

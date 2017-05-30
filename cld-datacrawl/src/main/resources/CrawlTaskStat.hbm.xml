@@ -6,12 +6,12 @@
 
 <hibernate-mapping>
 
-    <subclass name="org.cld.datacrawl.task.BrsCatStat" extends="org.cld.taskmgr.entity.TaskStat" discriminator-value="browse_cat">
+    <subclass name="org.cldutil.datacrawl.task.BrsCatStat" extends="org.cldutil.taskmgr.entity.TaskStat" discriminator-value="browse_cat">
         <property name="brokenCatNum" type="integer" column="BCat"/>
         <property name="catBrowsed" type="integer" column="catBrs"/>
     </subclass>
     
-    <subclass name="org.cld.datacrawl.task.BrsDetailStat" extends="org.cld.taskmgr.entity.TaskStat" discriminator-value="browse_detail">
+    <subclass name="org.cldutil.datacrawl.task.BrsDetailStat" extends="org.cldutil.taskmgr.entity.TaskStat" discriminator-value="browse_detail">
         <property name="brokenListPageNum" type="integer" column="BList"/>
         <property name="brokenDetailedPageNum" type="integer" column="BDetail"/>
         <property name="brokenPromoPageNum" type="integer" column="BProm"/>

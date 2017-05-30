@@ -5,11 +5,11 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<subclass name="org.cld.datacrawl.task.BrowseCategoryTaskConf" extends="org.cld.taskmgr.entity.Task" discriminator-value="browse_cat">
+	<subclass name="org.cldutil.datacrawl.task.BrowseCategoryTaskConf" extends="org.cldutil.taskmgr.entity.Task" discriminator-value="browse_cat">
         <property name="startURL" type="string" column="STARTURL"/>
         <property name="startLevel" type="integer" column="STARTLEVEL"/>
     </subclass>
-    <subclass name="org.cld.datacrawl.task.BrowseDetailTaskConf" extends="org.cld.taskmgr.entity.Task" discriminator-value="browse_detail">
+    <subclass name="org.cldutil.datacrawl.task.BrowseDetailTaskConf" extends="org.cldutil.taskmgr.entity.Task" discriminator-value="browse_detail">
         <property name="catId" type="string" column="CATID"/>
     	<property name="fromPage" type="integer" column="FROMPAGE"/>
     	<property name="toPage" type="integer" column="TOPAGE"/>
