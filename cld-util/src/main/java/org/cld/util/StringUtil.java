@@ -253,11 +253,16 @@ public class StringUtil {
 	
 	public static String getStringBetweenLastPreLastPost(String v, String pre, String post){
 		int beginIndex = v.lastIndexOf(pre);
-		int endIndex = v.lastIndexOf(post);
+		int endIndex = -1;
+		if (post!=null)
+			endIndex = v.lastIndexOf(post);
 		if (endIndex != -1 && beginIndex != -1)
 			return v.substring(beginIndex + pre.length(), endIndex);
-		else
+		else if (endIndex== -1 && beginIndex != -1){
+			return v.substring(beginIndex + pre.length());
+		}else{//beginIndex = -1
 			return v;
+		}
 	}
 	
 	public static List<String> fromStringList(String rids){

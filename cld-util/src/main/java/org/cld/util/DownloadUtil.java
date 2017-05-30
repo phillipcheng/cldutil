@@ -109,10 +109,14 @@ public class DownloadUtil implements Runnable {
 	private String rootDir;
 	@Override
 	public void run() {
-		for (String url:urls){
-			String fileName = (new File(url)).getName();
-			logger.info(String.format("download %s to %s from url:%s", fileName, rootDir, url));
-			DownloadUtil.downloadFile(url, rootDir, fileName);
+		logger.info(String.format("we have %d urls to download.", urls.size()));
+		for (int i=0; i<urls.size(); i++){
+			String url = urls.get(i);
+			String urlfileName = (new File(url)).getName();
+			String suffix = StringUtil.getStringBetweenLastPreLastPost(urlfileName, ".", null);
+			String fileName = StringUtil.getStringFromNum(i, 3);
+			logger.info(String.format("download %s.%s to %s from url:%s", fileName, suffix, rootDir, url));
+			DownloadUtil.downloadFile(url, rootDir, String.format("%s.%s", fileName, suffix));
 		}
 	}
 }
