@@ -17,9 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.datacrawl.mgr.ProductAnalyze;
 import org.cldutil.datastore.DBConf;
+import org.cldutil.datastore.DBFactory;
 import org.cldutil.datastore.api.DataStoreManager;
 import org.cldutil.datastore.impl.HbaseDataStoreManagerImpl;
 import org.cldutil.datastore.impl.HdfsDataStoreManagerImpl;
+import org.cldutil.datastore.impl.HibernateDataStoreManagerImpl;
 import org.cldutil.taskmgr.TaskConf;
 import org.cldutil.taskmgr.TaskMgr;
 import org.cldutil.taskmgr.entity.Task;
@@ -48,10 +50,11 @@ public class CrawlConf extends TaskConf {
 	public static final String crawlTaskConf_Key="crawl.taskconf";
 	//dsm can be a list, 1st is default, each site can pick one if not use default
 	public static final String crawlDsManager_Key="crawl.ds.manager";
-		public static final String crawlDsManager_Value_Nothing="nothing";
 		public static final String crawlDsManager_Value_Hbase = "hbase";
 		public static final String crawlDsManager_Value_Hdfs = "hdfs";
-	public static final String crawlDBConnectionUrl_Key = "crawl.db.connection.url";
+		public static final String crawlDsManager_Value_Hibernate= "hibernate";
+		public static final String crawlDsManager_Value_Nothing= "nothing";//not persist
+	public static final String HIBERNATE_CFG_FILE="hibernate.cfg.xml";
 	
 	public static final String DS_BIG="big.dm.";
 	public static final String DS_SMALL="small.dm.";
@@ -160,6 +163,10 @@ public class CrawlConf extends TaskConf {
 			}else if (dsmtype.equals(crawlDsManager_Value_Hdfs)){
 				dsmMap.put(dsmtype, new HdfsDataStoreManagerImpl(HadoopTaskLauncher.getHadoopConf(this), 
 						this.getHadoopCrawledItemFolder()));
+			}else if (dsmtype.equals(crawlDsManager_Value_Hibernate)){
+				HibernateDataStoreManagerImpl hiber = new HibernateDataStoreManagerImpl();
+				hiber.setHibernateSF(DBFactory.getSessionFactory(HIBERNATE_CFG_FILE));
+				dsmMap.put(dsmtype, hiber);
 			}
 		}
 		
@@ -272,18 +279,15 @@ public class CrawlConf extends TaskConf {
 					List<Object> listVal = properties.getList(key);
 					for (int i=0;  i<listVal.size(); i++){
 						String dsmtype = (String)listVal.get(i);
-						if (crawlDsManager_Value_Hbase.equals(dsmtype)){
-							crawlDsManagerValue.add(dsmtype);
-						}else if (crawlDsManager_Value_Hdfs.equals(dsmtype)){
-							crawlDsManagerValue.add(dsmtype);
-						}else if (crawlDsManager_Value_Nothing.equals(dsmtype)){
+						if (crawlDsManager_Value_Hbase.equals(dsmtype)||
+								crawlDsManager_Value_Hdfs.equals(dsmtype)||
+								crawlDsManager_Value_Hibernate.equals(dsmtype)||
+								crawlDsManager_Value_Nothing.equals(dsmtype)){
 							crawlDsManagerValue.add(dsmtype);
 						}else{
 							logger.error("unsupported ds manager type:" + dsmtype);
 						}
 					}
-				}else if (crawlDBConnectionUrl_Key.equals(key)){
-					crawlDBConnectionUrl = strVal;
 				}else if (productType_Key.equals(key)){
 					List<Object> listVal = properties.getList(key);
 					for (int i=0;  i<listVal.size(); i++){

@@ -35,9 +35,7 @@ public class HibernateDataStoreManagerImpl implements DataStoreManager {
 	/******************************
 	 * CrawledItem Operations
 	 */
-	@Override
-	public CrawledItem getCrawledItem(String id, String storeId, Class<? extends CrawledItem> crawledItemClazz) {
-		Session session = hsf.openSession();
+	private CrawledItem getCrawledItem(String id, String storeId, Class<? extends CrawledItem> crawledItemClazz, Session session) {
 		try {
 			List<CrawledItem> results = session.createCriteria(crawledItemClazz)
 				.add(Restrictions.eq("id.id", id))
@@ -48,11 +46,18 @@ public class HibernateDataStoreManagerImpl implements DataStoreManager {
 			CrawledItem p = null;
 			if (results != null && !results.isEmpty()) {
 				p = (CrawledItem) results.get(0);
+				p.fromParamData();
 			}
 			return p;
 		} catch (Exception e) {
 			logger.error("", e);
 			return null;
+		}
+	}
+	public CrawledItem getCrawledItem(String id, String storeId, Class<? extends CrawledItem> crawledItemClazz) {
+		Session session = hsf.openSession();
+		try {
+			return getCrawledItem(id, storeId, crawledItemClazz, session);
 		}finally{
 			session.close();
 		}
@@ -60,20 +65,31 @@ public class HibernateDataStoreManagerImpl implements DataStoreManager {
 
 	@Override
 	public boolean addUpdateCrawledItem(CrawledItem ci, CrawledItem oldCi) {
-		//compare with the oldCi
-		if (ci.contentEquals(oldCi))
-			return false;
-		//append the new one
 		Session session = hsf.openSession();
 		Transaction tx = null;
 		try {
+			if (oldCi==null){
+				oldCi = getCrawledItem(ci.getId().getId(), ci.getId().getStoreId(), CrawledItem.class, session);
+				if (ci.contentEquals(oldCi))
+					return false;
+			}
+			if (oldCi!=null){//copy ci to oldCi, if update
+				oldCi.copy(ci);
+			}
 			tx = session.beginTransaction();
-			session.save(ci);
+			if (oldCi!=null){
+				oldCi.toParamData();
+				session.update(oldCi);
+			}else{
+				ci.toParamData();
+				session.save(ci);
+			}
 			tx.commit();
 			return true;
 		} catch (Exception e) {
 			try{
-				tx.rollback();
+				if (tx!=null)
+					tx.rollback();
 			}catch(Throwable t1){
 				logger.error("throwable caught while rollback transaction for:" + ci, t1);
 			}

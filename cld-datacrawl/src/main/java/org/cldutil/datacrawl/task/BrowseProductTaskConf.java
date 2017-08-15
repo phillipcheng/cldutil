@@ -376,7 +376,7 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 					}
 				}
 				logger.info(String.format("prd id:%s", prdId));
-				if (CrawlConf.crawlDsManager_Value_Hbase.equals(bdt.getBaseBrowseTask().getDsm())){
+				if (!CrawlConf.crawlDsManager_Value_Nothing.equals(bdt.getBaseBrowseTask().getDsm())){
 					//check any update
 					if (prdId!=null && !"".equals(prdId)){			
 						if (dsManager!=null){

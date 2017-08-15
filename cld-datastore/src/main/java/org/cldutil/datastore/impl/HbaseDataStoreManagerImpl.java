@@ -40,30 +40,6 @@ public class HbaseDataStoreManagerImpl implements DataStoreManager {
 
 	private Configuration hbaseConf;
 	
-	/*
-	 * following will be set in the hbase install's hbase-site.xml
-  <property>
-    <name>hbase.tmp.dir</name>
-    <value>/Users/chengyi/data/tmp</value>
-  </property>
-  <property>
-    <name>hbase.zookeeper.property.dataDir</name>
-    <value>/Users/chengyi/data/zookeeper</value>
-  </property>
-  <property>
-    <name>hbase.zookeeper.quorum</name>
-    <value>127.0.0.1</value>
-  </property>
-  <property>
-  	<name>hbase.cluster.distributed</name>
-  	<value>false</value>
-  </property>
-  <property>
-  	<name>hbase.rootdir</name>
-  	<value>hdfs://127.0.0.1:19000/hbase</value>
-  </property>
-	*/
-	
 	public HbaseDataStoreManagerImpl(Configuration hadoopConf) {
 		hbaseConf = HBaseConfiguration.addHbaseResources(hadoopConf);
 	}
@@ -146,7 +122,7 @@ public class HbaseDataStoreManagerImpl implements DataStoreManager {
 				String rowKey = getRowKey(ci.getId());
 				logger.debug("addUpdateCrawledItem rowkey:" + rowKey);
 	            Put put = new Put(Bytes.toBytes(rowKey));
-	            put.add(Bytes.toBytes(CRAWLEDITEM_CF), Bytes.toBytes(CRAWLEDITEM_DATA), ci.getId().getCreateTime().getTime(),
+	            put.addColumn(Bytes.toBytes(CRAWLEDITEM_CF), Bytes.toBytes(CRAWLEDITEM_DATA), ci.getId().getCreateTime().getTime(),
 	            		Bytes.toBytes(ci.toJson()));
 	            table.put(put);
 	            return true;

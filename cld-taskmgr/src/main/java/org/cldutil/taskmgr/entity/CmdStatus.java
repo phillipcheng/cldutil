@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.datastore.api.DataStoreManager;
@@ -22,6 +26,8 @@ import org.cldutil.util.entity.CrawledItemId;
    PREP(4),
    KILLED(5);
 */
+@Entity
+@DiscriminatorValue("CmdStatus")
 public class CmdStatus extends CrawledItem{
 	protected static Logger logger =  LogManager.getLogger(CmdStatus.class);
 	public static final String CRAWLITEM_TYPE="org.cldutil.taskmgr.entity.CmdStatus";
@@ -31,11 +37,19 @@ public class CmdStatus extends CrawledItem{
 	private String marketId;
 	private String cmdName;
 
-	private Map<String, Integer> jsMap = new HashMap<String, Integer>();
+	private transient Map<String, Integer> jsMap = new HashMap<String, Integer>();
 	private Date endTime;
 	
 	//default constructor for json
 	public CmdStatus(){	
+	}
+	
+	public void copy(CmdStatus ci){
+		super.copy(ci);
+		this.marketId=ci.marketId;
+		this.cmdName=ci.cmdName;
+		this.jsMap=ci.jsMap;
+		this.endTime=ci.endTime;
 	}
 	
 	//timeless cmd, static info, only related to market, not related to time

@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 @Entity
 @DiscriminatorValue("product")
-@Table(name = "Product")
 public class Product extends CrawledItem{
 	public static final Logger logger = LogManager.getLogger(Product.class);
 	public static final String CRAWLITEM_TYPE="org.cldutil.util.entity.Product";
@@ -52,6 +51,14 @@ public class Product extends CrawledItem{
 
 	@Column(name = "totalPage")
 	private int totalPage;
+	
+	public void copy(Product ci){
+		super.copy(ci);
+		this.totalPage=ci.totalPage;
+		this.lastUrl=ci.lastUrl;
+		this.completed=ci.completed;
+		//etc
+	}
 	
 	public int getTotalPage() {
 		return totalPage;

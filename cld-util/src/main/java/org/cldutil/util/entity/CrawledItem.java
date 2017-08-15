@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.util.JsonUtil;
@@ -21,11 +27,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name = "CrawledItem")
 public class CrawledItem {
 	public static final String CRAWLITEM_TYPE="org.cldutil.util.entity.CrawledItem";
 	
 	private static Logger logger =  LogManager.getLogger(CrawledItem.class);
 	
+	@Id
 	@JsonIgnore
 	protected CrawledItemId id;
 
@@ -43,14 +52,15 @@ public class CrawledItem {
 	
 	protected Date updateTime; //time on the page, this item is updated differ than crawl time, time i found it
 	
+	@Lob 
+	@Column(name="paramData", length=9999999)
 	private String paramData; //json format data of paramMap
 	
 	private boolean goNext; //do i have a next task
 	
-	//@JsonIgnore
 	private transient Map<String, Object> params = new TreeMap<String, Object>();//I need the order of keys
 	
-	private String[][] csvValue;//list of key,value pairs to save to file
+	private transient String[][] csvValue;//list of key,value pairs to save to file
 	
 	//called by product, category's default constructor for hibernate
 	public CrawledItem(){
@@ -107,6 +117,18 @@ public class CrawledItem {
 		return this.id.equals(ca.id);
 	}
 
+	//copy the content from ci to this
+	public void copy(CrawledItem ci){
+		if (ci!=null){
+			this.fullUrl = ci.fullUrl;
+			this.name=ci.name;
+			this.parentCatId=ci.getParentCatId();
+			this.type = ci.type;
+			this.updateTime=ci.updateTime;
+			this.paramData=ci.paramData;
+			this.params=ci.params;
+		}
+	}
 	//compare not including the createTime and rootTaskId
 	public boolean contentEquals(CrawledItem ci){
 		if (ci!=null){
@@ -195,7 +217,6 @@ public class CrawledItem {
 	public String getType() {
 		return type;
 	}
-	
 	
 	public String toJson(){
 		List<String> removeKeys = new ArrayList<String>();

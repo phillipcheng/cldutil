@@ -19,6 +19,13 @@ public class DBFactory {
 	private static Map<String, SessionFactory> sfMap = 
 			new ConcurrentHashMap<String, SessionFactory>();
 	
+	
+	public static SessionFactory getSessionFactory(String hibernateCfg){
+		Configuration cfg = new Configuration();
+		cfg.configure(hibernateCfg);
+		return cfg.buildSessionFactory();
+	}
+	
 	//setup normal hibernate cfg
 	public static Configuration setUpCfg(String moduleName, DBConf dbconf) {
 		logger.debug("before setup hibernate cfg:" + dbconf);

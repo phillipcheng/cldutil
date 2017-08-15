@@ -51,8 +51,11 @@ import org.cldutil.xml.taskdef.VarType;
 public class ProductAnalyze{
 	
 	private static Logger logger =  LogManager.getLogger(ProductAnalyze.class);
+	//used in the java script provided in csvtransform/ops
 	public static final String VAR_CSV_NAME= "arr"; //name of the 1 dimension csv array passed to the filter
 	public static final String VAR_RET_NAME= "ret"; //name of the array return object
+	//param id to be used for csv output byId
+	public static final String PARAM_ID="id";//name
 	
 	private VerifyPage VPXP; //
 	
@@ -75,8 +78,10 @@ public class ProductAnalyze{
 				Map<String, Object> paramMap = new HashMap<String, Object>();
 				paramMap.putAll(task.getParamMap());
 				paramMap.putAll(ci.getParamMap());
+				String id = (String) ci.getParam(PARAM_ID);
+				if (id==null) id=ci.getId().getId();
 				outputDirPrefix = cconf.getHadoopCrawledItemFolder() + "/" +
-						task.getOutputDir(paramMap, cconf) + "/" + ci.getId().getId();
+						task.getOutputDir(paramMap, cconf) + "/" + id;
 			}
 			String[][] csv = ci.getCsvValue();
 			if (csv!=null){
@@ -171,7 +176,6 @@ public class ProductAnalyze{
 				for (TransformOp top: csvTransform.getOps()){
 					for (int i=0; i<csv.length; i++){
 						Map<String, Object> attributes = new HashMap<String, Object>();
-						//String[] varr = csv[i][1].split(",");//split value
 						attributes.put(VAR_CSV_NAME, csv[i][1]);//pass the unsplit string
 						attributes.putAll(product.getParamMap());
 						attributes.putAll(taskInstance.getParamMap());
@@ -279,16 +283,12 @@ public class ProductAnalyze{
 			}
 			product.setGoNext(goNext);
 			if (csvTransform!=null && csvTransform.getTransformClass()!=null){
-				//do the transform and write out the csv and write to hbase if dsm set to hbase
+				//do the transform and write out the csv and write to db if db is set
 				try {
 					postCrawlProcess(task, bdt.getBaseBrowseTask(), product);
 					//write the output
 					if (csvtrans!=null && context!=null){
 						writeCsvOut(csvtrans, hdfsByIdOutputMap, context, mos, product, cconf, task);
-					}
-					logger.info(String.format("in add product, dsm is %s, add to DB is %b", bdt.getBaseBrowseTask().getDsm(), addToDB));
-					if (CrawlConf.crawlDsManager_Value_Hbase.equals(bdt.getBaseBrowseTask().getDsm()) && addToDB){
-						dsManager.addUpdateCrawledItem(product, lastProduct);
 					}
 				} catch (Exception e) {
 					logger.error("", e);
@@ -298,7 +298,8 @@ public class ProductAnalyze{
 					product.setCsvValue(HdfsDataStoreManagerImpl.getCSV(product, bdt.getBaseBrowseTask()));
 				}
 			}
-			if (dsManager!=null && addToDB){
+			logger.info(String.format("in add product, dsm is %s, add to DB is %b", bdt.getBaseBrowseTask().getDsm(), addToDB));
+			if (dsManager!=null && addToDB && !CrawlConf.crawlDsManager_Value_Nothing.equals(bdt.getBaseBrowseTask().getDsm())){
 				dsManager.addUpdateCrawledItem(product, lastProduct);	
 			}
 		}else{
