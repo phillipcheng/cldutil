@@ -17,7 +17,10 @@ name:type:defaultValue:meaning
    but lots of pages are using it.
    * dsm:hbase,hdfs(using csvtransform configured to generate csv),hibernate:this will override the one configured in the properties for this task. 
    will use this datastore to store/update/retrieve the crawled item.
+   * sampleUrl: list of sample start urls (string) helping the studio to visualize configurating this crawl task
+   * param: list of parameters for this task, when invoking this task passed in via API or configuration. the type of param can be expression, which uses previous parameters to calculate.
    * 
+   
 
 crawl task instance:  
 org.cldutil.datacrawl.task.BrowseProductTaskConf extends Task  
