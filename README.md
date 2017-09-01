@@ -46,12 +46,19 @@ name:type:defaultValue:meaning
 ```
    * cachePage: define the hdfs file name to save the starting page
    * userAttribute: 
+     * get type attribute: fetch the values from the page and set to attributes stored in CrawledItem (will be returned)
+       * name: the attribute on the CrawledItem to store the fetched value
+       * value: defines how to get the value for this attribute from the page
+         * 
+     * set type attribute: for input / select typed element on the page, we need to set values
+       * name: by default the nameType is XPATH, and name indicates the xpath of the input element of the page 
+       * value: the value to set in the input element
    * pageVerify: defined the boolean verification expression for the page, if not met, page will be refetched until met or timed out.
    * csvtransform: handler defined to tranform the crawledItem to list of csv lines and output to hdfs
    * filter: boolean typed js functionused together with csvtransform, to filter csv line by line
    * nextTask
      * condition: boolean typed conditional expression, if evaluated true, next task will be invoked
-     * invokeTask
+     * invokeTask: the task name to be called, the params passed to the next task
    
 
 
