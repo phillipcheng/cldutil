@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.cldutil.datacrawl.CrawlConf;
-import org.cldutil.datacrawl.test.CrawlTestUtil;
+import org.cldutil.datacrawl.client.CrawlClientUtil;
 import org.cldutil.taskmgr.TaskExeMgr;
 
 public class LocalCrawlables implements Runnable{
@@ -29,7 +29,7 @@ public class LocalCrawlables implements Runnable{
 	public void run() {
 		try {
 			ThreadContext.put(TASK_ID_KEY, taskId);
-			CrawlTestUtil.browsePrd(task, cconf, taskId, addToDB);
+			CrawlClientUtil.browsePrd(task, cconf, taskId, addToDB);
 			//normal end
 			tem.cancel(task.getSiteconfid(), taskId);
 		}catch(InterruptedException ie){

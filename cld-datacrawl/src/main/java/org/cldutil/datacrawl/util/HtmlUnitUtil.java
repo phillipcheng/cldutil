@@ -506,7 +506,7 @@ public class HtmlUnitUtil {
 										page.wait(cconf.getWaitTime());//wait for the necessary js done
 										logger.warn(String.format("wait for the expected value come out, wait %d times, max %d times", innerloop, cconf.getMaxLoop()));
 										if (innerloop==cconf.getMaxLoop()-1 &&tried==cconf.getMaxRetry()-1)
-											logger.info(page.asText());
+											logger.info(page.asXml());
 									}
 									innerloop++;
 									result.setErrorCode(HtmlPageResult.VERIFY_FAILED);

@@ -18,7 +18,6 @@ public abstract class AbstractCrawlItemToCSV {
 	public static final String FN_STARTDATE="startDate";
 	public static final String FN_ENDDATE="endDate";
 	public static final String FN_DATA="data";
-	public static final String FN_BASEMARKETID="baseMarketId";
 	public static final String FN_MARKETID="marketId";
 	public static final String FN_YEAR="year";
 	public static final String FN_QUARTER="quarter";

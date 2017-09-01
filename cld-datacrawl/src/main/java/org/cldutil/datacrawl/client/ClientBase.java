@@ -1,19 +1,17 @@
-package org.cldutil.datacrawl.test;
+package org.cldutil.datacrawl.client;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.datacrawl.CrawlConf;
-import org.cldutil.datacrawl.util.HtmlUnitUtil;
 import org.cldutil.taskmgr.entity.RunType;
 import org.cldutil.util.entity.CrawledItem;
 
 
-public class TestBase {
-	protected static Logger logger =  LogManager.getLogger(TestBase.class);
+public class ClientBase {
+	protected static Logger logger =  LogManager.getLogger(ClientBase.class);
 	protected CrawlConf cconf;
 
 	private String pFile = null;	
@@ -32,17 +30,13 @@ public class TestBase {
 		return cconf;
 	}
 	
-	private static String getConfId(String fileName){
-		return fileName.substring(0,fileName.indexOf("."));
-	}
-	
 	private static String testTaskId="testTaskId";
 	
 	public List<CrawledItem> browsePrd(String confName, String prdUrl, String prdTaskName, RunType bt) throws InterruptedException{
-		return CrawlTestUtil.browsePrd(null, confName, prdUrl, prdTaskName, cconf, testTaskId, null, false, bt);
+		return CrawlClientUtil.browsePrd(null, confName, prdUrl, prdTaskName, cconf, testTaskId, null, false, bt);
 	}
 	public List<CrawledItem> browsePrd(String confName, String prdUrl, String prdTaskName, Map<String, Object> params, RunType bt) throws InterruptedException{
-		return CrawlTestUtil.browsePrd(null, confName, prdUrl, prdTaskName, cconf, testTaskId, params, false, bt);
+		return CrawlClientUtil.browsePrd(null, confName, prdUrl, prdTaskName, cconf, testTaskId, params, false, bt);
 	}
 	
 	public static final String CMD_CRAWL="crawl";
@@ -63,7 +57,7 @@ public class TestBase {
 		}
 		
 		String prop = args[0];
-		TestBase tb = new TestBase();
+		ClientBase tb = new ClientBase();
 		tb.setProp(prop);
 		String siteconfName = args[1];
 		

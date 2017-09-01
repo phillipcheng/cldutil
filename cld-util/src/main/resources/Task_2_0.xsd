@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
 <!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
-<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="Tasks" type="TasksType"/>
 	<xs:simpleType name="VarType">
@@ -261,36 +240,11 @@ false:(default as not specified), return the page itself</xs:documentation>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="rerunInterim" type="xs:int" use="optional">
-			<xs:annotation>
-				<xs:documentation>
-					if missing, means run only, else specify number of
-					seconds before rerun
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
 		<xs:attribute name="enableJS" type="xs:boolean" use="optional" default="false"/>
-		<xs:attribute name="skipJS" type="xs:string" use="optional"/>
-		<xs:attribute name="dsm">
+		<xs:attribute name="dsm" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>csvtransform set means generate csv for the whole batch of browse prd tasks. if dsm not set, that is all, if dsm set to hbase then hbase entry will be generated.
-dsm set to hdfs means generate csv for each product browsed.
-dsm set to hbase means generate hbase entry for each product browsed.</xs:documentation>
-			</xs:annotation>
-			<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="hdfs"/>
-					<xs:enumeration value="hbase"/>
-					<xs:enumeration value="hibernate"/>
-					<xs:enumeration value="nothing"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="dsmHeader" type="xs:boolean" use="optional" default="false">
-			<xs:annotation>
-				<xs:documentation>
-					whether generate header line in csv for hdfs
-				</xs:documentation>
+dsm set to hdfs means generate csv for each product browsed.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="mbMemoryNeeded" type="xs:int" use="optional" default="1024">
@@ -321,13 +275,6 @@ dsm set to hbase means generate hbase entry for each product browsed.</xs:docume
 		<xs:attribute name="tryPattern" type="xs:boolean" use="optional" default="true">
 			<xs:annotation>
 				<xs:documentation>tryPattern for external list type variable, for the value on each page. if there is a total page specified, then tryPattern will be default to true, if not want this, set this to false.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="monitorPrice" type="xs:boolean" use="optional" default="false"/>
-		<xs:attribute name="processType" type="BDTProcessType" use="optional" default="inline">
-			<xs:annotation>
-				<xs:documentation>inline: browse all products in the bdt within this task
-genbpt: generate browse-product-tasks for this bdt, and each bpt is processed in parrallel</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

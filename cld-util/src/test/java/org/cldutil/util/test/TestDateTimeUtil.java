@@ -19,6 +19,11 @@ public class TestDateTimeUtil {
 	public static final Logger logger = LogManager.getLogger(TestDateTimeUtil.class);
 	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	@Test
+	public void testEpoch(){
+		long epoch = DateTimeUtil.getEpochDefaultFormat("2017-09-01");
+		logger.info(epoch);
+	}
 	/*
 	 * TODO adding MdHms_DF support
 	 * 2013年1月14日10:00到2013年1月21日09:59:59
@@ -54,9 +59,9 @@ public class TestDateTimeUtil {
 	public void testLocale(){
 		String str = "2013年1月21日上午09:30";
 		try {
-			Date d = DateTimeUtil.yMdahm_DF.parse(str);
+			Date d = DateTimeUtil.yMdahm_DF_China.parse(str);
 			logger.info(d);
-			String str2= DateTimeUtil.yMdahm_DF.format(d);
+			String str2= DateTimeUtil.yMdahm_DF_China.format(d);
 			logger.info(str2);
 			assertTrue(str.equals(str2));
 		} catch (ParseException e) {

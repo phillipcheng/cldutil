@@ -51,6 +51,10 @@
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
 		</dependency>
+		<dependency>
+	        <groupId>org.hibernate.javax.persistence</groupId>
+	        <artifactId>hibernate-jpa-2.1-api</artifactId>
+	    </dependency> 
 	</dependencies>
 	
 	<build>

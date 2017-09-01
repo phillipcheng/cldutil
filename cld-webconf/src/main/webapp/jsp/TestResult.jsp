@@ -17,12 +17,11 @@
 %>
 <%
 	String status = "Finished";
-	List<Category> catlist= ConfServlet.cconf.getDefaultDsm().getCategoryByRootTaskId(taskId);
-	List<Product> prdlist= ConfServlet.cconf.getDefaultDsm().getProductByRootTaskId(taskId);
+	//List<Product> prdlist= ConfServlet.cconf.getDefaultDsm().getProductByRootTaskId(taskId);
 %>
 Task: <%=taskId%>, Status:<%=status%>
 <div>
-	<%@include file="prdlist.jspf" %>
+	<!-- <%@include file="prdlist.jspf" %>  -->
 </div>
 
 

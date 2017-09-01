@@ -51,7 +51,7 @@ public class TaskMgr {
 	private static Map<String, ParsedTasksDef> parsedTaskDefMap = new ConcurrentHashMap<String, ParsedTasksDef>();
 	
 	private String masterConfFile;
-	private Map<String, List<Task>> confTaskMap = new HashMap<String, List<Task>>();
+	private Map<String, List<Task>> confTaskMap = new HashMap<String, List<Task>>();//cached task definition
 	
 	public static final String TASK_RUN_PARAM_CCONF="cconf";
 	

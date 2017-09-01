@@ -11,13 +11,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.datastore.api.DataStoreManager;
-import org.cldutil.util.entity.Category;
 import org.cldutil.util.entity.CrawledItem;
-import org.cldutil.util.entity.LogPattern;
-import org.cldutil.util.entity.Logs;
-import org.cldutil.util.entity.Price;
-import org.cldutil.util.entity.Product;
-import org.cldutil.util.entity.SiteConf;
 import org.cldutil.xml.taskdef.BrowseTaskType;
 import org.cldutil.xml.taskdef.ParamType;
 import org.w3c.dom.Node;
@@ -66,23 +60,11 @@ public class HdfsDataStoreManagerImpl implements DataStoreManager{
 						continue;
 					}
 				}
-				if (btt.isDsmHeader()){
-					if (i>0){
-						sb.append(",");
-					}
-					sb.append(key);
-				}
 				if (size==0){//take 1st list's size
 					size = ((List)value).size();
 				}
 				i++;
 			}else if (outParamList.contains(key)){
-				if (btt.isDsmHeader()){
-					if (i>0){
-						sb.append(",");
-					}
-					sb.append(key);
-				}
 				i++;
 				nonListKeys.add(key);
 			}else{
@@ -92,9 +74,6 @@ public class HdfsDataStoreManagerImpl implements DataStoreManager{
 		}
 		logger.info("size:" + size);
 		List<String[]> csvList = new ArrayList<String[]>();
-		if (btt.isDsmHeader()){
-			csvList.add(new String[]{id, sb.toString()});
-		}
 		for (i=0; i<size; i++){
 			sb = new StringBuffer();
 			int j=0;
@@ -160,76 +139,6 @@ public class HdfsDataStoreManagerImpl implements DataStoreManager{
 		fileName = fileName.replaceAll("[^a-zA-Z0-9]", "_");
 		String outF = ci.getId().getStoreId() + "/" + fileName;
 		return addCrawledItem(ci, oldCi, outF);
-	}
-	
-	
-	@Override
-	public boolean addPrice(Price price) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public Price getLatestPrice(String id, String storeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int delProductAndPriceByStoreId(String storeId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public List<Product> getProductByPcatId(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Product> getProductByRootTaskId(String rootTaskId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public long getProductCount(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public List<Category> getCategoryByRootTaskId(String rootTaskId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Category> getCategoryByPcatId(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int delCategoryByStoreId(String storeId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public long getCategoryCount(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

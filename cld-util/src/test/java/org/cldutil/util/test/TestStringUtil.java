@@ -30,26 +30,6 @@ public class TestStringUtil {
 		s = StringUtil.getStringFromNum(23, 3);
 		assertTrue(s.equals("023"));
 	}
-	@Test
-	/*
-	 * ¥74.50
-	 * ￥ 157.80
-	 * ￥ 1,157.80
-	 * 
-	 */
-	public void testGetRMBValue(){
-		double d = StringUtil.getRMBValue("¥74.50");
-		assertTrue(d==74.5);
-		
-		
-		d = StringUtil.getRMBValue("￥ 157.80");
-		assertTrue(d==157.8);
-		
-		d = StringUtil.getRMBValue("￥ 1,157.80");
-		assertTrue(d==1157.8);
-		
-		
-	}
 	
 	@Test
 	public void testGetFirstSentence(){

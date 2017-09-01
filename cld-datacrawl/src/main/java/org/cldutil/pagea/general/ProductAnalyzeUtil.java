@@ -212,7 +212,7 @@ public class ProductAnalyzeUtil {
 		return false;
 	}
 	
-	public static void callbackReadDetails(WebClient wc, HtmlPage inpage, Product product, Task task, 
+	public static void readDetails(WebClient wc, HtmlPage inpage, Product product, Task task, 
 			ParsedBrowsePrd taskDef, CrawlConf cconf) throws InterruptedException {	
 		//set the user attributes in case there is default values
 		BrowseDetailType bdt = taskDef.getBrowsePrdTaskType();

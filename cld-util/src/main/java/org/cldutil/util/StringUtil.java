@@ -15,10 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 public class StringUtil {
 	
-	public static final char RMB_1='¥';
-	public static final String RMB_2="￥"; //CH_MONEY_SIGN
-	public static final String PRICE_SPE=",";
-	
 	public static final char KeyValue_Sep1='：'; //CH_colon
 	public static final char KeyValue_Sep2=':'; //En_colon
 	
@@ -94,26 +90,7 @@ public class StringUtil {
 		Scanner in = new Scanner(str).useDelimiter("[^0-9]+");
 		return in.nextInt();
 	}
-	/*
-	 * ¥74.50
-	 * ￥ 157.80
-	 * ￥ 1,157.80
-	 * 
-	 */
-	public static double getRMBValue(String orgString){
-		String stripSep = orgString.replaceAll(PRICE_SPE, "");
-		String withNoSign = null;
-		if (stripSep.indexOf(RMB_1) != -1){
-			withNoSign = stripSep.substring(stripSep.indexOf(RMB_1) + 1);
-			return Double.parseDouble(withNoSign);
-		}else if (stripSep.indexOf(RMB_2) != -1){
-			withNoSign = stripSep.substring(stripSep.indexOf(RMB_2) + 1);
-			return Double.parseDouble(withNoSign);
-		}else{
-			logger.error("price symbal not found is:" + orgString);
-			return -1;
-		}
-	}
+	
 	
 	/*
 	 * ISBN: 9787807292807

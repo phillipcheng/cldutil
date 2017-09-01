@@ -217,6 +217,7 @@ public class ProductAnalyze{
 			return false;
 		}
 	}
+	
 	/**
 	 * 
 	 * @param wc
@@ -268,8 +269,7 @@ public class ProductAnalyze{
 			}
 			
 			//call back
-			CsvTransformType csvTransform = bdt.getBaseBrowseTask().getCsvtransform();
-			ProductAnalyzeUtil.callbackReadDetails(wc, details, product, task, taskDef, cconf);
+			ProductAnalyzeUtil.readDetails(wc, details, product, task, taskDef, cconf);
 			product.getId().setCreateTime(new Date());
 			//logger.debug("product got:" + product);
 			boolean goNext=false;
@@ -282,6 +282,7 @@ public class ProductAnalyze{
 				}
 			}
 			product.setGoNext(goNext);
+			CsvTransformType csvTransform = bdt.getBaseBrowseTask().getCsvtransform();
 			if (csvTransform!=null && csvTransform.getTransformClass()!=null){
 				//do the transform and write out the csv and write to db if db is set
 				try {

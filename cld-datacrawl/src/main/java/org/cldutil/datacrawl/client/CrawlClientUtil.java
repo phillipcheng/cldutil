@@ -1,4 +1,4 @@
-package org.cldutil.datacrawl.test;
+package org.cldutil.datacrawl.client;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,9 +16,9 @@ import org.cldutil.taskmgr.entity.Task;
 import org.cldutil.util.entity.CrawledItem;
 import org.cldutil.util.entity.SiteConf;
 
-public class CrawlTestUtil{
+public class CrawlClientUtil{
 	
-	private static Logger logger =  LogManager.getLogger(CrawlTestUtil.class);
+	private static Logger logger =  LogManager.getLogger(CrawlClientUtil.class);
 	
 	//
 	public static BrowseProductTaskConf getPrdTask(SiteConf siteconf, String confFileName, String url, String prdTaskName,

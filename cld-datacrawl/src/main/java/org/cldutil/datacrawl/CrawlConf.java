@@ -57,7 +57,7 @@ public class CrawlConf extends TaskConf {
 	public static final String HIBERNATE_CFG_FILE="hibernate.cfg.xml";
 	
 	public static final String DS_BIG="big.dm.";
-	public static final String DS_SMALL="small.dm.";
+	public static final String DS_META="meta.dm.";//data store for meta data, results of static cmd and system info
 	
 	public static final String systemProductClassName="org.cldutil.util.entity.Product";
 	public static final String systemProductName="product";
@@ -82,7 +82,7 @@ public class CrawlConf extends TaskConf {
 	private Map<String, DataStoreManager> dsmMap = new HashMap<String, DataStoreManager>();
 
 	private DBConnConf bigdbconf = null;
-	private DBConnConf smalldbconf = null;
+	private DBConnConf metadbconf = null;
 	
 	private Map<String, String> params = new HashMap<String, String>();//store all the parameters in name-value pair for toString
 	
@@ -258,7 +258,7 @@ public class CrawlConf extends TaskConf {
 			
 			setProxyConf(new ProxyConf(properties));
 			bigdbconf = new DBConnConf(DS_BIG, properties);
-			smalldbconf = new DBConnConf(DS_SMALL, properties);
+			setMetadbconf(new DBConnConf(DS_META, properties));
 			//3. parse new
 			Iterator<String> enu = properties.getKeys();
 			String strVal=null;
@@ -484,19 +484,19 @@ public class CrawlConf extends TaskConf {
 		this.bigdbconf = bigdbconf;
 	}
 
-	public DBConnConf getSmalldbconf() {
-		return smalldbconf;
-	}
-
-	public void setSmalldbconf(DBConnConf smalldbconf) {
-		this.smalldbconf = smalldbconf;
-	}
-
 	public ProxyConf getProxyConf() {
 		return proxyConf;
 	}
 
 	public void setProxyConf(ProxyConf proxyConf) {
 		this.proxyConf = proxyConf;
+	}
+
+	public DBConnConf getMetadbconf() {
+		return metadbconf;
+	}
+
+	public void setMetadbconf(DBConnConf metadbconf) {
+		this.metadbconf = metadbconf;
 	}
 }

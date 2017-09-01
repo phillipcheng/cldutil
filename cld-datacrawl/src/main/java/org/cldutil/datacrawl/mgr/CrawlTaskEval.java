@@ -171,7 +171,7 @@ public class CrawlTaskEval {
 	private static String processFile(ValueType vt, HtmlElement clickable, Map<String, Object> params, CrawlConf cconf, DomNode page){
 		String fileName = "";
 		if (vt.getToDirectory()!=null){
-			fileName = TaskUtil.evalStringValue(vt.getFromType(), vt.getToDirectory(), params);
+			fileName = TaskUtil.evalStringValue(vt.getToEntryType(), vt.getToDirectory(), params);
 			logger.info(String.format("fileName is: %s", fileName));
 		}
 		try{
@@ -180,7 +180,9 @@ public class CrawlTaskEval {
 				is = clickable.click().getWebResponse().getContentAsStream();
 				if (clickable instanceof HtmlAnchor){
 					String url = anchorToFullUrl((HtmlAnchor)clickable, (HtmlPage)page);
-					fileName = fileName + "/" + FilenameUtils.getName(url);
+					if (FilenameUtils.indexOfExtension(fileName)==-1){//the to directory generated does not contains a file
+						fileName = fileName + "/" + FilenameUtils.getName(url);
+					}
 				}
 				CrawlUtil.downloadPage(cconf, is, fileName);
 			}finally{

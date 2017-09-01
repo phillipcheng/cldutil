@@ -69,5 +69,30 @@
 	      <groupId>org.apache.hadoop</groupId>
 	      <artifactId>hadoop-hdfs</artifactId>
 	    </dependency>
+	    <dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.11</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-yarn_2.11</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_2.11</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.spark</groupId>
+		  <artifactId>spark-streaming_2.11</artifactId>
+		  <scope>provided</scope>
+		</dependency>
+	    <dependency>
+	      <groupId>bdap</groupId>
+	      <artifactId>bdap.engine</artifactId>
+	      <version>VVERSIONN</version>
+	    </dependency>
 	</dependencies>
 </project>

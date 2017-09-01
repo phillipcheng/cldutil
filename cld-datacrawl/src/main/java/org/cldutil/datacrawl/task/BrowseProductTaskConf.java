@@ -160,11 +160,6 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 				if (paramMap.containsKey(AbstractCrawlItemToCSV.FN_MARKETID)){//for stock
 					String marketId = (String) paramMap.get(AbstractCrawlItemToCSV.FN_MARKETID);
 					String endDate = (String) paramMap.get(AbstractCrawlItemToCSV.FN_ENDDATE);
-					//remove the ending endDate_delta
-					String deltaSuffix = "_" + endDate + "_delta";
-					if (marketId.endsWith(deltaSuffix)){
-						marketId = marketId.substring(0, marketId.indexOf(deltaSuffix));
-					}
 					od.append(marketId);
 					od.append("_");
 					od.append(endDate);
@@ -206,7 +201,6 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 		super.setUp(tasks, pluginClassLoader, params);
 		
 		BrowseDetailType bdt = getBrowseDetailTask(this.getName()).getBrowsePrdTaskType();
-		bdt.isMonitorPrice();
 		//start url only used by product list analyze generate a list of product analyze by API
 		//since the start url is get from xml file, so un-escape is needed,
 		//Just for display and id purpose, since for list type parameters, the value is wrong, it should be generated into a list of start url

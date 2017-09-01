@@ -40,22 +40,5 @@ public class DSMTest {
 		Product p = (Product) manager.getCrawledItem(productId, storeId, Product.class);
 		assertTrue(p.getOriginalPrice()==product.getOriginalPrice());
 
-		Price priceHist = new Price(productId, new Date(), storeId, price, promotionId);
-		manager.addPrice(priceHist);
-
-		int timeLapse=500;
-		for (int i = 0; i < 3; i++) {
-			Price newPrice = new Price(productId, new Date(
-					System.currentTimeMillis() + timeLapse * i), storeId, price + i, promotionId);
-			manager.addPrice(newPrice);
-			try {
-				Thread.sleep(timeLapse);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		Price latestPrice = manager.getLatestPrice(productId, storeId);
-		logger.info(latestPrice);
 	}
 }

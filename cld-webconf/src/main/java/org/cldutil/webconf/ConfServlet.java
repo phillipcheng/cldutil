@@ -21,9 +21,9 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.cldutil.datacrawl.CrawlConf;
+import org.cldutil.datacrawl.client.CrawlClientUtil;
 import org.cldutil.datacrawl.task.BrowseProductTaskConf;
 import org.cldutil.datacrawl.task.LocalCrawlables;
-import org.cldutil.datacrawl.test.CrawlTestUtil;
 import org.cldutil.taskmgr.TaskExeMgr;
 import org.cldutil.taskmgr.TaskUtil;
 import org.cldutil.taskmgr.entity.RunType;
@@ -169,7 +169,7 @@ public class ConfServlet extends HttpServlet {
 					String startUrl = request.getParameter(REQ_PARAM_TEST_STARTURL + "_" + siteid);
 					Map<String, Object> paramMap = new HashMap<String, Object>();
 					if (siteconf!=null){
-						BrowseProductTaskConf t = CrawlTestUtil.getPrdTask(siteconf, null, startUrl, taskName, cconf, paramMap, bt);
+						BrowseProductTaskConf t = CrawlClientUtil.getPrdTask(siteconf, null, startUrl, taskName, cconf, paramMap, bt);
 						String taskId = t.getId();
 						if (!useHadoop){
 							tem.submit(taskId, siteid, new LocalCrawlables(t, taskId, false, cconf, tem));

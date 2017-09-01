@@ -29,7 +29,13 @@ public abstract class JDBCMapper implements DataMapper {
 		return true;
 	}
 	
+	//
 	public String getInsertSql(String csv){
+		return null;
+	}
+	
+	//
+	public PersistObject getObject(String csv){
 		return null;
 	}
 }

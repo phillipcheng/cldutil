@@ -1,9 +1,6 @@
 package org.cldutil.datastore.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
@@ -16,14 +13,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cldutil.datastore.api.DataStoreManager;
-import org.cldutil.util.entity.Category;
 import org.cldutil.util.entity.CrawledItem;
 import org.cldutil.util.entity.CrawledItemId;
-import org.cldutil.util.entity.LogPattern;
-import org.cldutil.util.entity.Logs;
-import org.cldutil.util.entity.Price;
-import org.cldutil.util.entity.Product;
-import org.cldutil.util.entity.SiteConf;
 
 //for hbase, the createTime of CrawledItemId is not used.
 public class HbaseDataStoreManagerImpl implements DataStoreManager {
@@ -141,76 +132,6 @@ public class HbaseDataStoreManagerImpl implements DataStoreManager {
 		}else{
 			return false;
 		}
-	}
-
-
-	@Override
-	public boolean addPrice(Price price) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public Price getLatestPrice(String id, String storeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int delProductAndPriceByStoreId(String storeId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public List<Product> getProductByPcatId(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Product> getProductByRootTaskId(String rootTaskId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public long getProductCount(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public List<Category> getCategoryByRootTaskId(String rootTaskId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<Category> getCategoryByPcatId(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int delCategoryByStoreId(String storeId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public long getCategoryCount(String storeId, String pcatId) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }

@@ -38,21 +38,24 @@ public class DateTimeUtil {
 	public static long MILL_SEC_MARKET_STOP_AFTERNOON = 1000 * 60 * 6 * 150; //9:30 in the morning
 	public static long DIFF_CURRENT_GMT = TimeZone.getDefault().getRawOffset(); //difference between current timezone and GMT
 		//between Beijing and GMT is 1000 * 60 * 60 * 8; 
+
+	public static final String yMd_String = "yyyy-MM-dd";
+	public static final SimpleDateFormat yMd= new SimpleDateFormat(yMd_String);
+	
 	
 	public static final Locale chinaLocale =  new Locale("zh", "CN");
 	//2013年1月21日上午09:30
-	public static final String yMdahm_DateFormat="yyyy" + CH_YEAR+ "M" + CH_MONTH + "dd" + CH_DAY + "aaahh:mm";
-	public static final String yMd_DateFormat = "yyyy" + CH_YEAR+ "MM" + CH_MONTH + "dd" + CH_DAY;
-	public static final String yMdHm_DateFormat="yyyy" + CH_YEAR+ "MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm";
-	public static final String MdHm_DateFormat="MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm";
-	public static final String MdHms_DateFormat="MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm:ss";
+	public static final String yMdahm_String_China="yyyy" + CH_YEAR+ "M" + CH_MONTH + "dd" + CH_DAY + "aaahh:mm";
+	public static final String yMd_String_China = "yyyy" + CH_YEAR+ "MM" + CH_MONTH + "dd" + CH_DAY;
+	public static final String yMdHm_String_China="yyyy" + CH_YEAR+ "MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm";
+	public static final String MdHm_String_China="MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm";
+	public static final String MdHms_String_China="MM" + CH_MONTH + "dd" + CH_DAY + "HH:mm:ss";
 
-
-	public static final SimpleDateFormat yMdahm_DF= new SimpleDateFormat(yMdahm_DateFormat, chinaLocale);
-	public static final SimpleDateFormat yMd_DF= new SimpleDateFormat(yMd_DateFormat, chinaLocale);
-	public static final SimpleDateFormat yMdHm_DF= new SimpleDateFormat(yMdHm_DateFormat, chinaLocale);
-	public static final SimpleDateFormat MdHm_DF= new SimpleDateFormat(MdHm_DateFormat, chinaLocale);
-	public static final SimpleDateFormat MdHms_DF= new SimpleDateFormat(MdHms_DateFormat, chinaLocale);
+	public static final SimpleDateFormat yMdahm_DF_China= new SimpleDateFormat(yMdahm_String_China, chinaLocale);
+	public static final SimpleDateFormat yMd_DF_China= new SimpleDateFormat(yMd_String_China, chinaLocale);
+	public static final SimpleDateFormat yMdHm_DF_China= new SimpleDateFormat(yMdHm_String_China, chinaLocale);
+	public static final SimpleDateFormat MdHm_DF_China= new SimpleDateFormat(MdHm_String_China, chinaLocale);
+	public static final SimpleDateFormat MdHms_DF= new SimpleDateFormat(MdHms_String_China, chinaLocale);
 
 	
 	public static Date getDate(String date, SimpleDateFormat sdf){
@@ -63,6 +66,11 @@ public class DateTimeUtil {
 			logger.error(e.getMessage());
 			return null;
 		}
+	}
+	
+	public static long getEpochDefaultFormat(String date){
+		Date d = getDate(date, yMd);
+		return d.getTime()/1000;
 	}
 	
 	public static int[] getYearQuarter(Date d){
@@ -93,7 +101,7 @@ public class DateTimeUtil {
 	
 	public static Date getDate(String value){
 		try {
-			return yMd_DF.parse(value);
+			return yMd_DF_China.parse(value);
 		} catch (ParseException e) {
 			logger.error("parse date error:", e);
 		}
@@ -110,13 +118,13 @@ public class DateTimeUtil {
 			String fromStr = value.substring(0,value.indexOf(CH_TO));
 			String toStr = value.substring(value.indexOf(CH_TO)+CH_TO.length());
 			try {
-				Date fromDate = yMdHm_DF.parse(fromStr);		
+				Date fromDate = yMdHm_DF_China.parse(fromStr);		
 				Date toDate = null;
 				if (!toStr.contains(CH_YEAR)){
-					toDate = MdHm_DF.parse(toStr);
+					toDate = MdHm_DF_China.parse(toStr);
 					toDate.setYear(fromDate.getYear());
 				}else{
-					toDate = yMdHm_DF.parse(toStr);
+					toDate = yMdHm_DF_China.parse(toStr);
 				}
 				return new DateTimeRange(fromDate, toDate);
 			} catch (ParseException e) {
@@ -126,11 +134,11 @@ public class DateTimeUtil {
 		}else{
 			Date fromDate;
 			try {
-				fromDate = yMdHm_DF.parse(value);
+				fromDate = yMdHm_DF_China.parse(value);
 				return new DateTimeRange(fromDate, null);
 			} catch (ParseException e) {
 				try {
-					fromDate = yMdahm_DF.parse(value);
+					fromDate = yMdahm_DF_China.parse(value);
 					return new DateTimeRange(fromDate, null);
 				} catch (ParseException e1) {
 					logger.error("failed to parse:" + value);
