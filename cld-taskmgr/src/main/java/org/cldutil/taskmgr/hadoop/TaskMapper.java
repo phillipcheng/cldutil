@@ -55,7 +55,7 @@ public class TaskMapper extends Mapper<Object, Text, Text, Text>{
 			t.initParsedTaskDef();
 			TaskResult tr = t.runMyself(crawlTaskParams, true, context, mos);
 			if (tr!=null && tr.getTasks()!=null){
-				HadoopTaskLauncher.executeTasks(tconf, tr.getTasks(), hadoopCrawlTaskParams, null, false, this.getClass(), null);
+				HadoopTaskLauncher.executeTasks(tconf, t, tr.getTasks(), hadoopCrawlTaskParams, null, false, this.getClass(), null);
 				logger.info(String.format("I finished and send out %d tasks.", tr.getTasks().size()));
 			}
 		}catch(RuntimeException re){

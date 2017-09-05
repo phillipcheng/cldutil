@@ -144,7 +144,7 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 	}
 	
 	@Override
-	public String getOutputDir(Map<String, Object> paramMap, TaskConf tconf){
+	public String getOutputDir(Map<String, Object> paramMap, Task taskRepresent, TaskConf tconf){
 		if (paramMap==null){
 			paramMap = this.getParamMap();
 		}
@@ -155,7 +155,7 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 		if (btt!=null){
 			CsvTransformType csvtrans = btt.getCsvtransform();
 			if (csvtrans!=null){//using the default
-				//raw/[marketId]_[endDate]/storeid/[year]_[quarter]
+				//raw/[marketId]_[endDate]/storeid/parent-task-id/[year]_[quarter]
 				StringBuffer od = new StringBuffer("raw/");
 				if (paramMap.containsKey(AbstractCrawlItemToCSV.FN_MARKETID)){//for stock
 					String marketId = (String) paramMap.get(AbstractCrawlItemToCSV.FN_MARKETID);
@@ -171,7 +171,10 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 						od.append(storeId);
 					}
 					od.append("/");
-					logger.info(String.format("output dir is %s.", od.toString()));
+					//
+					if (taskRepresent!=null){
+						od.append(taskRepresent.getId()).append("/");
+					}
 					if (paramMap.containsKey(AbstractCrawlItemToCSV.FN_YEAR)){
 						int year = (int) paramMap.get(AbstractCrawlItemToCSV.FN_YEAR);
 						od.append(year);
@@ -181,9 +184,14 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 						od.append("_");
 						od.append(quarter);
 					}
+					logger.info(String.format("output dir is %s.", od.toString()));
 				}else{//generally, using storeId, followed by the parameters
 					od.append(storeId);
 					od.append("/");
+					//
+					if (taskRepresent!=null){
+						od.append(taskRepresent.getId()).append("/");
+					}
 					String paramStr = paramToString(paramMap);
 					od.append(paramStr);
 				}
@@ -253,6 +261,26 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 		}
 	}
 	
+	private static String getIdAttr(DomNode startPage, ParsedBrowsePrd pbpTemplate, CrawlConf cconf, Map<String, Object> params) 
+			throws InterruptedException{
+		String prdId = null;
+		AttributeType idAvt = pbpTemplate.getPdtAttrMap().get("id");
+		if (idAvt!=null){
+			prdId = (String) CrawlTaskEval.eval(startPage, idAvt.getValue(), cconf, params);
+		}else{
+			logger.error(String.format("for page typed start url, must has id attribute define. %s", startPage));
+		}
+		return prdId;
+	}
+	
+	private static void setTaskId(Task t, ParsedBrowsePrd pbpTemplate, CrawlConf cconf, Map<String, Object> params) 
+			throws InterruptedException{
+		t.genId();
+		String pid = getIdAttr(null, pbpTemplate, cconf, params);
+		if (pid!=null){
+			t.setId(pid);
+		}
+	}
 	/**
 	 * reusable browse detailed product and add to store if updated
 	 * @param task: task instance
@@ -332,9 +360,11 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 				for (int i=0; i<startUrlList.size(); i++){
 					String startUrl = (String) startUrlList.get(i);
 					t = t.clone(cconf.getPluginClassLoader());
+					//only set single value params, remove all the list type params.
+					t.cleanAllParams();
 					t.putAllParams(singleValueParams);
 					t.setStartURL(startUrl);
-					t.genId();
+					setTaskId(t, pbpTemplate, cconf, params);
 					tl.add(t);
 				}
 				return new TaskResult(tl, null);
@@ -361,13 +391,7 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 				if (startUrl instanceof String){
 					prdId= (String)startUrl;//prd id is url for string typed start url.
 				}else{
-					AttributeType idAvt = pbpTemplate.getPdtAttrMap().get("id");
-					if (idAvt!=null){
-						prdId = (String) CrawlTaskEval.eval((DomNode)startUrl, idAvt.getValue(), cconf, params);
-					}else{
-						logger.error(String.format("for page typed start url, must has id attribute define. %s", startUrl));
-						break;
-					}
+					prdId = getIdAttr((DomNode)startUrl, pbpTemplate, cconf, params);
 				}
 				logger.info(String.format("prd id:%s", prdId));
 				if (!CrawlConf.crawlDsManager_Value_Nothing.equals(bdt.getBaseBrowseTask().getDsm())){
@@ -440,7 +464,7 @@ public class BrowseProductTaskConf extends Task implements Serializable{
 					BrowseProductTaskConf t = (BrowseProductTaskConf) cconf.getTaskMgr().getTask(callTaskName);
 					t = t.clone(cconf.getPluginClassLoader());
 					t.putAllParams(params);
-					t.genId();
+					setTaskId(t, pbptTemplate, cconf, params);
 					TaskResult tr = browseProduct(t, cconf, storeId, callTaskName, t.getParamMap(), 
 							crawlDateTime, addToDB, btt, hdfsByIdOutputMap, context, mos);
 					ftr.addTR(tr);

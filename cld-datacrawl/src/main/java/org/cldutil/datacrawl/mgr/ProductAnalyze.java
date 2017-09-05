@@ -81,7 +81,7 @@ public class ProductAnalyze{
 				String id = (String) ci.getParam(PARAM_ID);
 				if (id==null) id=ci.getId().getId();
 				outputDirPrefix = cconf.getHadoopCrawledItemFolder() + "/" +
-						task.getOutputDir(paramMap, cconf) + "/" + id;
+						task.getOutputDir(paramMap, null, cconf) + "/" + id;
 			}
 			String[][] csv = ci.getCsvValue();
 			if (csv!=null){
@@ -94,7 +94,7 @@ public class ProductAnalyze{
 					}else{
 						v = csv[total-1-i];
 					}
-					if (v.length==2){
+					if (v.length==2){//key, value
 						if (v[1]!=null && !"".equals(v[1])){
 							String csvkey = v[0];
 							String csvvalue = v[1];
@@ -121,7 +121,7 @@ public class ProductAnalyze{
 								}
 							}
 						}
-					}else if (v.length==3){
+					}else if (v.length==3){//key, value, output_file_prefix
 						String outkey=v[0];
 						String outvalue=v[1];
 						String outfilePrefix=v[2];
@@ -144,6 +144,8 @@ public class ProductAnalyze{
 							}else{
 								br.write(outkey + "," + outvalue + "\n");
 							}
+						}else{
+							logger.error(String.format("for key,value,output_file_prefix typed output, CsvOutpuType must be specified."));
 						}
 					}else{
 						logger.error("wrong number of csv length: not 2 and 3 but:" + v.length);

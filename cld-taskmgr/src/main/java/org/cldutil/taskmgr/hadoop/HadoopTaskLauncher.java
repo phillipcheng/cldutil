@@ -136,7 +136,11 @@ public class HadoopTaskLauncher {
 		hadoopParams.put("mapreduce.reduce.java.opts", optValue);
 	}
 	
-	public static String executeTasks(TaskConf tconf, List<Task> taskList, Map<String, String> hadoopParams, 
+	/**
+	 * using the taskList to start mr jobs, needs to generate a task input file first
+	 * will generate outputdir based on the 1st task instance (taskList.get(0)) and parent task
+	 */
+	public static String executeTasks(TaskConf tconf, Task parentTask, List<Task> taskList, Map<String, String> hadoopParams, 
 			String sourceName, boolean sync, Class mapperClass, Class reducerClass){
 		if (taskList.size()>0){
 			Configuration conf = getHadoopConf(tconf);
@@ -164,7 +168,12 @@ public class HadoopTaskLauncher {
 				updateHadoopParams(t, hadoopParams);
 				logger.info("after update hadoop params:" + hadoopParams);
 				boolean multipleOutput = hasMultipleOutput(t);
-				String outputDir = t.getOutputDir(null, tconf);
+				String outputDir = null;
+				if (parentTask!=null){
+					outputDir = t.getOutputDir(null, t, tconf);
+				}else{
+					outputDir = t.getOutputDir(null, null, tconf);
+				}
 				logger.info(String.format("output dir is %s", outputDir));
 				return hadoopExecuteTasks(tconf, hadoopParams, new String[]{taskFileName}, multipleOutput, outputDir, sync, mapperClass, reducerClass, true);
 			}catch (Exception e) {
@@ -175,12 +184,8 @@ public class HadoopTaskLauncher {
 	}
 	
 	/**
-	 * general mr job lanuch
-	 * @param nc
-	 * @param hadoopParams
-	 * @param inputPaths
-	 * ...
-	 * @return jobId
+	 * using inputPath (pointing to task files) to start mr job
+	 * providing the outputDir as well
 	 */
 	public static final String FILTER_REGEXP_KEY="file.pattern";
 	public static String hadoopExecuteTasks(TaskConf tconf, Map<String, String> hadoopParams, 
@@ -189,6 +194,11 @@ public class HadoopTaskLauncher {
 		return hadoopExecuteTasks(tconf, hadoopParams, inputPaths, multipleOutput, outputDir, sync, mapperClass, reducerClass, null, null, null, uselinesPerMap);
 	}
 	
+	/**
+	 * using inputPaths (pointing to task files) to start mr job with custom partitioner, groupComparator classes
+	 * providing the outputDir as well
+	 * @return
+	 */
 	public static String hadoopExecuteTasks(TaskConf tconf, Map<String, String> hadoopParams, 
 			String[] inputPaths, boolean multipleOutput, String outputDir, 
 			boolean sync, 

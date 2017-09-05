@@ -50,10 +50,8 @@ public class Task implements Comparable<Task>, Serializable{
 	private String nextTask = END_TASK;
 	private Date lastUpdateDate;
 	private Date startDate;
-	private String paramData;
 	private String confName; //the conf file contains this task
 	
-	//@JsonIgnore
 	private transient Map<String, Object> paramMap = new TreeMap<String, Object>();
 
 	@JsonIgnore
@@ -79,7 +77,6 @@ public class Task implements Comparable<Task>, Serializable{
 		t.setNextTask(this.nextTask);
 		t.setLastUpdateDate(lastUpdateDate);
 		t.setStartDate(startDate);
-		t.setParamData(paramData);
 		t.getParamMap().putAll(this.getParamMap());
 		t.setParsedTaskDef(parsedTaskDef);
 		t.setConfName(confName);
@@ -124,16 +121,6 @@ public class Task implements Comparable<Task>, Serializable{
 		return false;
 	}
 	
-	//serialize the paramMap to json param data, only selected types (now:string,int) will be stored
-	public void toParamData(){
-		paramData = JsonUtil.toJsonStringFromMap(paramMap);
-	}
-	
-	//deserialize
-	public void fromParamData(){
-		paramMap = JsonUtil.fromJsonStringToMap(paramData);
-	}
-	
 	//id is enough, id is md5 of the content
 	@Override
 	public boolean equals(Object o){
@@ -149,7 +136,6 @@ public class Task implements Comparable<Task>, Serializable{
 	}
 	public String toString(){
 		StringBuffer sb = new StringBuffer("id:" + getId() + ", name:" + getName() + ", ttype:" + getTtype());
-		sb.append(", paramData:" + paramData);
 		if (parsedTaskDef!=null)
 			sb.append(", parsedTaskDef:" + parsedTaskDef);
 		if (paramMap!=null){
@@ -236,19 +222,14 @@ public class Task implements Comparable<Task>, Serializable{
 	public void putParam(String key, Object val) {
 		paramMap.put(key, val);
 	}
-	
+	public void cleanAllParams(){
+		paramMap = new TreeMap<String, Object>();
+	}
 	public void putAllParams(Map<String, Object> params){
 		if (paramMap==null){
 			paramMap = new TreeMap<String, Object>();
 		}
 		paramMap.putAll(params);
-	}
-	public String getParamData() {
-		return paramData;
-	}
-
-	public void setParamData(String paramData) {
-		this.paramData = paramData;
 	}
 	
 	//parsed tasks definition
@@ -300,7 +281,7 @@ public class Task implements Comparable<Task>, Serializable{
 		this.confName = confName;
 	}
 	
-	public String getOutputDir(Map<String, Object> paramMap, TaskConf tconf){
+	public String getOutputDir(Map<String, Object> paramMap, Task parentTask, TaskConf tconf){
 		return "";
 	}
 }

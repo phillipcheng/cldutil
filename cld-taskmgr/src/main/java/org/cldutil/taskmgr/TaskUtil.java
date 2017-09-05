@@ -2,6 +2,7 @@ package org.cldutil.taskmgr;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,14 +26,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class TaskUtil {
 	public static final String KEY_TASKCONF_TYPE="tconf.type";
 	public static final String TASKCONF_PROPERTIES="task.properties.file"; //the key in the hadoop configuration for task conf properties file
+	public static final String strDF = "yyyy-MM-dd-HH-mm-ss";
+	public static final SimpleDateFormat df = new SimpleDateFormat(strDF);
 	
 	private static Map<String, SafeSimpleDateFormat> dfMap = new HashMap<String, SafeSimpleDateFormat>();
 	public static final String LIST_VALUE_SEP=",";
 	private static Logger logger =  LogManager.getLogger(TaskUtil.class);
+	
+	private static ObjectMapper getOM(){
+		ObjectMapper om = new ObjectMapper();
+		om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		om.setDateFormat(df);
+		return om;
+	}
 	
 	public static String taskToJson(Task t){
 		//
@@ -46,7 +57,8 @@ public class TaskUtil {
 		for (String key: removeKeys){
 			t.getParamMap().remove(key);
 		}
-		ObjectWriter ow = new ObjectMapper().writer().with(new MinimalPrettyPrinter());
+		
+		ObjectWriter ow = getOM().writer().with(new MinimalPrettyPrinter());
 		try {
 			String json = ow.writeValueAsString(t);
 			return json;
@@ -57,14 +69,15 @@ public class TaskUtil {
 	}
 	
 	public static Task taskFromJson(String json){
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = getOM();
 		try {
 			Task t = mapper.readValue(json, Task.class);
 			Class<? extends Task> clazz = (Class<? extends Task>) Class.forName(t.getTtype());
 			t =  mapper.readValue(json, clazz);
+			/*
 			if (t.getParamMap()==null || t.getParamMap().size()==0){
 				t.fromParamData();
-			}
+			}*/
 			return t;
 		} catch (Exception e) {
 			logger.error("", e);
@@ -211,7 +224,7 @@ public class TaskUtil {
 		if (hadoopJobParams!=null){
 			hadoopCrawlTaskParams.putAll(hadoopJobParams);
 		}
-		return HadoopTaskLauncher.executeTasks(tconf, tlist, hadoopCrawlTaskParams, 
+		return HadoopTaskLauncher.executeTasks(tconf, null, tlist, hadoopCrawlTaskParams, 
 				sourceName, sync, mapperClass, reducerClass);
 	}
 	

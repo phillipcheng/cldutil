@@ -244,5 +244,16 @@ public class DateTimeUtil {
 		return outd;
 	}
 	
-
+	public static String getNormalDateString(Date d1, Date d2){
+		Date d = d1;
+		if (d1==null) {
+			d=d2;
+		}
+		if (d!=null){
+			return dbSdf.format(d);
+		}else{
+			logger.error(String.format("both input dates are null"));
+			return null;
+		}
+	}
 }

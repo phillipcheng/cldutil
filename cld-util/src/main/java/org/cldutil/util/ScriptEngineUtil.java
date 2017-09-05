@@ -23,11 +23,7 @@ public class ScriptEngineUtil {
 		if (variables!=null){
 			for (String key: variables.keySet()){
 				Object v = variables.get(key);
-				if (v instanceof Date){
-					jsEngine.put(key, ((Date)v).getTime());
-				}else{
-					jsEngine.put(key, v);
-				}
+				jsEngine.put(key, v);
 			}
 		}
 		try {
@@ -65,7 +61,7 @@ public class ScriptEngineUtil {
 				}
 			}
 			return ret;
-		} catch (ScriptException e) {
+		} catch (Exception e) {
 			if (logError){
 				logger.error(String.format("error msg: %s while eval %s, var map is %s", e.getMessage(), exp, variables));
 			}

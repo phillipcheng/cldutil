@@ -35,7 +35,7 @@ public class HibernatePersistMgr {
 	public PersistObject get(Class clazz, Serializable id){
 		Session ses = hibernateSF.openSession();
 		try {
-			PersistObject obj = ses.get(clazz, id);
+			PersistObject obj = (PersistObject)ses.get(clazz, id);
 			return obj;
 		}finally{
 			if (ses!=null){
